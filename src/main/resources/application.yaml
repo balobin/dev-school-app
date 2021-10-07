@@ -12,7 +12,7 @@ spring:
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost/dev-school}
     driverClassName: org.postgresql.Driver
     username: ${DATASOURCE_USERNAME:postgres}
-    password: ${DATASOURCE_PASSWORD:example}
+    password: ${DATASOURCE_PASSWORD:postgres}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
