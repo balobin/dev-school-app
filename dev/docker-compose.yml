@@ -1,0 +1,37 @@
+version: '3.9'
+
+volumes:
+  pg:
+  app:
+services:
+  postgres-db:
+    container_name: postgres-db    
+    image: postgres:13
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=dev-school
+    volumes:
+      - pg:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - local-net
+
+  api:
+    container_name: api
+    image: registry.gitlab.com/balobin/dev-school-app:latest
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - app:/root/logs
+    depends_on:
+      - postgres-db
+    networks:
+      - local-net
+
+networks:
+  local-net:
+    external: true

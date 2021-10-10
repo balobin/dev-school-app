@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  postgres-db:
+    container_name: postgres-db    
+    image: postgres:13
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=dev-school
+    volumes:
+      - $HOME/docker/volumes/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - main
+
+  api:
+    container_name: api
+    image: registry.gitlab.com/balobin/dev-school-app:latest
+    restart: always
+    ports:
+      - 8080:8080
+#      - :5432:5432
+    volumes:
+      - /etc/hosts:/etc/hosts
+    depends_on:
+      - postgres-db
+    networks:
+      - main
+
+networks:
+  main:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.66.10.0/24
+          gateway: 172.66.10.1
